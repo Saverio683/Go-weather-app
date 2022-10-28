@@ -4,7 +4,9 @@ go 1.19
 
 //https://api.openweathermap.org/data/2.5/weather?q=CITTÀ,NAZIONE&units=metric&appid=17e57c3ab6fdc68fb851ae80c2f9c4b6
 
-require fyne.io/fyne/v2 v2.2.3
+require (
+	fyne.io/fyne/v2 v2.2.3
+)
 
 require (
 	fyne.io/systray v1.10.1-0.20220621085403-9a2652634e93 // indirect

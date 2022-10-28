@@ -1,41 +1,66 @@
 package main
 
 import (
-	"fmt"
+	"weather-app/apptype"
 	"weather-app/ui"
 	"weather-app/utils"
 
-	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
-	"fyne.io/fyne/v2/container"
 )
 
-func main() {
-	prova, err := utils.MakeRequest("palermo", "it")
+/* type apiData struct {
+	err     bool
+	loading bool
+	data    utils.RespBody
+}
+
+func handleSubmit(city, ct string) *apiData {
+	resp, err := utils.MakeRequest(city, ct)
 
 	if err != nil {
-		panic(err)
+		return &apiData{err: true, loading: false, data: utils.RespBody{}}
 	} else {
-		fmt.Println(prova.Weather[0])
-		fmt.Println(prova.Main)
-		fmt.Println(prova.Sys)
-		fmt.Println(prova.Dt)
+		return &apiData{err: false, loading: false, data: utils.RespBody{resp.Weather, resp.Main, resp.Sys}}
+	}
+ }*/
+
+func main() {
+	weatherApp := app.New()
+	window := weatherApp.NewWindow("Weather app")
+
+	details, _ := utils.MakeRequest("Cinisi", "Italy")
+
+	state := apptype.State{
+		Details: details,
 	}
 
-	app := app.New()
-	window := app.NewWindow("Current Weather")
+	appInit := ui.AppInit{
+		Window:  window,
+		State:   &state,
+		Details: details,
+	}
 
-	customForm := ui.GenerateCustomForm()
-	apiResults := ui.ShowApiResults("Cinisi", "20 °C")
+	ui.Setup(&appInit)
 
-	wrapper := container.NewGridWithRows(
-		2,
-		customForm,
-		apiResults,
-	)
+	appInit.Window.ShowAndRun()
+	/*
+		 	app := app.New()
+			window := app.NewWindow("Current Weather")
 
-	window.Resize(fyne.NewSize(445, 400))
-	window.SetContent(wrapper)
+			customForm := ui.CreateCustomForm(handleSubmit)
+			apiResults := ui.CreateMainData("Cinisi", "20 °C")
+			details := ui.CreateDetails(15, 18, 34, 1020, "6:12", "20:09")
 
-	window.ShowAndRun()
+			wrapper := container.NewGridWithRows(
+				3,
+				customForm,
+				apiResults,
+				details,
+			)
+
+			window.Resize(fyne.NewSize(445, 400))
+			window.SetContent(wrapper)
+
+			window.ShowAndRun()
+	*/
 }
