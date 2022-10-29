@@ -9,15 +9,15 @@ import (
 
 type Form struct {
 	widget.BaseWidget
-	CityPlaceHolder, CountryPlaceholder string
-	submitFunc                          func(a, b string)
+	City, Country string
+	submitFunc    func(a, b string)
 }
 
-func NewForm(cityPlaceHolder, countryPlaceholder string, submitFunc func(a, b string)) *Form {
+func NewForm(city, country string, submitFunc func(a, b string)) *Form {
 	form := &Form{
-		CityPlaceHolder:    cityPlaceHolder,
-		CountryPlaceholder: countryPlaceholder,
-		submitFunc:         submitFunc,
+		City:       city,
+		Country:    country,
+		submitFunc: submitFunc,
 	}
 	form.ExtendBaseWidget(form)
 
@@ -29,6 +29,20 @@ func (form *Form) CreateRenderer() fyne.WidgetRenderer {
 	cityEntry := widget.NewEntry()
 	countrEntry := widget.NewEntry()
 	button := widget.NewButton("Search", func() { form.submitFunc(cityEntry.Text, countrEntry.Text) })
+
+	//setting placeholder in text input
+	cityEntry.SetPlaceHolder("City")
+	countrEntry.SetPlaceHolder("Country (optional)")
+
+	//setting size
+	cityEntry.Resize(fyne.NewSize(250, 40))
+	countrEntry.Resize(fyne.NewSize(150, 40))
+	button.Resize(fyne.NewSize(160, 40))
+
+	//positioning
+	cityEntry.Move(fyne.NewPos(10, 10))
+	countrEntry.Move(fyne.NewPos(cityEntry.Size().Width+25, 10))
+	button.Move(fyne.NewPos(10, 25))
 
 	container := container.New(
 		layout.NewVBoxLayout(),

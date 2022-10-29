@@ -28,10 +28,12 @@ func main() {
 	weatherApp := app.New()
 	window := weatherApp.NewWindow("Weather app")
 
-	details, _ := utils.MakeRequest("Cinisi", "Italy")
+	details, _ := utils.MakeRequest("Rome", "")
 
 	state := apptype.State{
 		Details: details,
+		Loading: false,
+		Error:   false,
 	}
 
 	appInit := ui.AppInit{

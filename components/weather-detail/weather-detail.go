@@ -9,13 +9,6 @@ import (
 	"fyne.io/fyne/v2/widget"
 )
 
-/* type WeatherDetail struct {
-	widget.BaseWidget
-	Key, Value  *canvas.Text
-	Index bool
-	Wrapper     *fyne.Container
-} */
-
 type WeatherDetail struct {
 	widget.BaseWidget
 	Key, Value string

@@ -42,9 +42,9 @@ func getStringFromAny(Value any) string {
 
 const id = "17e57c3ab6fdc68fb851ae80c2f9c4b6"
 
-func MakeRequest(city, nation string) ([]*weatherdetail.WeatherDetail, error) { //makes the request to the OpenWeatherMap API
+func MakeRequest(city, country string) ([]*weatherdetail.WeatherDetail, error) { //makes the request to the OpenWeatherMap API
 	apiResult := make([]*weatherdetail.WeatherDetail, 0)
-	url := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + nation + "&units=metric&appid=" + id
+	url := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&units=metric&appid=" + id
 	resp, err := http.Get(url)
 
 	if err != nil {
@@ -64,8 +64,8 @@ func MakeRequest(city, nation string) ([]*weatherdetail.WeatherDetail, error) { 
 		   		weatherdetail.NewWeatherDetail("temp", getStringFromAny(parsedResp.Main["temp"]), 1), */
 		weatherdetail.NewWeatherDetail("temp min", getStringFromAny(parsedResp.Main["temp_min"]), 0),
 		weatherdetail.NewWeatherDetail("temp max", getStringFromAny(parsedResp.Main["temp_max"]), 1),
-		weatherdetail.NewWeatherDetail("humidity", getStringFromAny(parsedResp.Main["humidity"]), 2),
-		weatherdetail.NewWeatherDetail("pressure", getStringFromAny(parsedResp.Main["pressure"]), 3),
+		weatherdetail.NewWeatherDetail("feels like", getStringFromAny(parsedResp.Main["feels_like"]), 2),
+		weatherdetail.NewWeatherDetail("humidity", getStringFromAny(parsedResp.Main["humidity"]), 3),
 		weatherdetail.NewWeatherDetail("sunrise", getStringFromAny(parsedResp.Sys["sunrise"]), 4),
 		weatherdetail.NewWeatherDetail("sunset", getStringFromAny(parsedResp.Sys["sunset"]), 5),
 	)

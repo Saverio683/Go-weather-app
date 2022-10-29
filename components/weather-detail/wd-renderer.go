@@ -17,13 +17,11 @@ func (renderer *WeatherDetailRenderer) MinSize() fyne.Size {
 func (renderer *WeatherDetailRenderer) Layout(size fyne.Size) {
 }
 func (renderer *WeatherDetailRenderer) Refresh() {
-	/*
-		canvas.Refresh(renderer.key)
-		canvas.Refresh(renderer.val)
-		canvas.Refresh(renderer.wrapper)
-	*/
+	canvas.Refresh(renderer.key)
+	canvas.Refresh(renderer.val)
+	canvas.Refresh(renderer.wrapper)
 }
 func (renderer *WeatherDetailRenderer) Objects() []fyne.CanvasObject {
-	return make([]fyne.CanvasObject, 0)
+	return renderer.wrapper.Objects
 }
 func (renderer *WeatherDetailRenderer) Destroy() {}

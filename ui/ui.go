@@ -2,12 +2,10 @@ package ui
 
 import (
 	"image/color"
-	"strconv"
 
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/canvas"
 	"fyne.io/fyne/v2/container"
-	"fyne.io/fyne/v2/layout"
 )
 
 func CreateMainData(city, temp string) *fyne.Container {
@@ -35,53 +33,6 @@ func CreateMainData(city, temp string) *fyne.Container {
 	result := container.NewWithoutLayout(
 		text,
 		tempAndImg,
-	)
-
-	return result
-}
-
-func createDetail(k, v string, isSecondRow bool) *fyne.Container {
-	key := canvas.NewText(k+": ", color.White)
-	val := canvas.NewText(v, color.White)
-
-	key.TextStyle.Bold = true
-
-	var marginLeft float32 = 10
-	var height float32
-
-	if isSecondRow {
-		height = 20
-	} else {
-		height = 40
-	}
-
-	key.Move(fyne.NewPos(marginLeft, height))
-	val.Move(fyne.NewPos(key.MinSize().Width+marginLeft, height))
-
-	result := container.NewWithoutLayout(
-		key,
-		val,
-	)
-
-	return result
-}
-
-func CreateDetails(t_min, t_max, h, p int, sr, st string) *fyne.Container {
-	temp_min := createDetail("temp min", strconv.Itoa(t_min)+"°C", false)
-	temp_max := createDetail("temp max", strconv.Itoa(t_max)+"°C", false)
-	humidity := createDetail("humidity", strconv.Itoa(h)+"%", false)
-	pressure := createDetail("pressure", strconv.Itoa(p)+"mb", true)
-	sunrise := createDetail("sunrise", sr, true)
-	sunset := createDetail("sunset", st, true)
-
-	result := container.New(
-		layout.NewGridLayout(3),
-		temp_min,
-		temp_max,
-		humidity,
-		pressure,
-		sunrise,
-		sunset,
 	)
 
 	return result

@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"strconv"
+	"time"
 	"weather-app/apptype"
 	weatherdetail "weather-app/components/weather-detail"
 
@@ -8,6 +10,30 @@ import (
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/layout"
 )
+
+func milliToDate(m string, isMorning bool) string {
+	var result string
+	var hoursToAdd int
+
+	if isMorning {
+		hoursToAdd = 0
+	} else {
+		hoursToAdd = 12
+	}
+
+	t, err := strconv.ParseInt(m, 10, 64)
+	if err != nil {
+		result = "error"
+	} else {
+		/* 		hours := int((t / (1000 * 3600)) % 24)
+		   		minutes := int((t / (1000 * 60)) % 60) */
+		hour := strconv.Itoa(time.UnixMilli(t).UTC().Hour() + hoursToAdd)
+		minute := strconv.Itoa(time.UnixMilli(t).UTC().Minute())
+		result = hour + ":" + minute
+	}
+
+	return result
+}
 
 func BuildWeatherDetails(state *apptype.State) *fyne.Container {
 	weatherDetails := make([]fyne.CanvasObject, len(state.Details))
@@ -17,15 +43,14 @@ func BuildWeatherDetails(state *apptype.State) *fyne.Container {
 		val := state.Details[i].Value
 
 		switch key {
-		case "temp min":
-		case "temp max":
-			val += "°C"
 		case "humidity":
 			val += "%"
-		case "pressure":
-			val += "mb"
 		case "sunrise":
+			val = milliToDate(val, true)
 		case "sunset":
+			val = milliToDate(val, false)
+		default:
+			val += "°C"
 		}
 
 		w := weatherdetail.NewWeatherDetail(state.Details[i].Key, val, i)
