@@ -9,14 +9,11 @@ import (
 
 type Form struct {
 	widget.BaseWidget
-	City, Country string
-	submitFunc    func(a, b string)
+	submitFunc func(city, country string)
 }
 
-func NewForm(city, country string, submitFunc func(a, b string)) *Form {
+func NewForm(submitFunc func(city, country string)) *Form {
 	form := &Form{
-		City:       city,
-		Country:    country,
 		submitFunc: submitFunc,
 	}
 	form.ExtendBaseWidget(form)

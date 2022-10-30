@@ -28,7 +28,7 @@ func NewWeatherDetail(key, value string, index int) *WeatherDetail {
 
 func (weatherDetail *WeatherDetail) CreateRenderer() fyne.WidgetRenderer {
 	//creating widgets
-	key := canvas.NewText(weatherDetail.Key+": ", color.White)
+	key := canvas.NewText(weatherDetail.Key, color.White)
 	value := canvas.NewText(weatherDetail.Value, color.White)
 
 	key.TextStyle.Bold = true

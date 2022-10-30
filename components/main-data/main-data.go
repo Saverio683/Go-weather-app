@@ -11,21 +11,14 @@ import (
 
 type MainData struct {
 	widget.BaseWidget
-	Title, Temp *canvas.Text
-	ImgLink     string
-	Image       *canvas.Image
-	Wrapper     *fyne.Container
-	Container   *fyne.Container
+	Title, Temp, ImgLink string
 }
 
-func NewMainData(title, temp *canvas.Text, imgLink string, image *canvas.Image, wrapper, container *fyne.Container) *MainData {
+func NewMainData(title, temp, imgLink string) *MainData {
 	MainData := &MainData{
-		Title:     title,
-		Temp:      temp,
-		ImgLink:   imgLink,
-		Image:     image,
-		Wrapper:   wrapper,
-		Container: container,
+		Title:   title,
+		Temp:    temp,
+		ImgLink: imgLink,
 	}
 
 	MainData.ExtendBaseWidget(MainData)
@@ -35,17 +28,27 @@ func NewMainData(title, temp *canvas.Text, imgLink string, image *canvas.Image, 
 
 func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
 	//creating widgets
-	title := canvas.NewText(MainData.Title.Text, color.White)
-	temp := canvas.NewText(MainData.Temp.Text, color.White)
+	title := canvas.NewText(MainData.Title, color.White)
+	temp := canvas.NewText(MainData.Temp, color.White)
+
+	title.TextSize = 18
+	temp.TextSize = 50
+
+	title.Move(fyne.NewPos(10, 20))
 
 	//"http://openweathermap.org/img/wn/09d@2x.png"
 	r, _ := fyne.LoadResourceFromURLString(MainData.ImgLink)
 	image := canvas.NewImageFromResource(r)
 
+	image.FillMode = canvas.ImageFillContain
+	image.Resize(fyne.NewSize(100, 100))
+	image.Move(fyne.NewPos(310, 0))
+
 	wrapper := container.NewWithoutLayout(
 		temp,
 		image,
 	)
+	wrapper.Move(fyne.NewPos(10, 60))
 
 	container := container.NewWithoutLayout(
 		title,
@@ -55,7 +58,6 @@ func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
 	return &MainDataRenderer{
 		title:     title,
 		temp:      temp,
-		imgLink:   MainData.ImgLink,
 		image:     image,
 		wrapper:   wrapper,
 		container: container,

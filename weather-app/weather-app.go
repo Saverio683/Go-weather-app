@@ -2,8 +2,9 @@ package main
 
 import (
 	"weather-app/apptype"
+	maindata "weather-app/components/main-data"
+	weatherdetail "weather-app/components/weather-detail"
 	"weather-app/ui"
-	"weather-app/utils"
 
 	"fyne.io/fyne/v2/app"
 )
@@ -22,47 +23,51 @@ func handleSubmit(city, ct string) *apiData {
 	} else {
 		return &apiData{err: false, loading: false, data: utils.RespBody{resp.Weather, resp.Main, resp.Sys}}
 	}
- }*/
+}*/
 
 func main() {
 	weatherApp := app.New()
 	window := weatherApp.NewWindow("Weather app")
 
-	details, _ := utils.MakeRequest("Rome", "")
+	details := make([]*weatherdetail.WeatherDetail, 6)
+
+	for i := 0; i < 6; i++ {
+		details[i] = weatherdetail.NewWeatherDetail("", "", i)
+	}
 
 	state := apptype.State{
-		Details: details,
-		Loading: false,
-		Error:   false,
+		MainData: maindata.NewMainData("Please search something", "", ""),
+		Details:  details,
+		Loading:  false,
+		Error:    false,
 	}
 
 	appInit := ui.AppInit{
-		Window:  window,
-		State:   &state,
-		Details: details,
+		Window: window,
+		State:  &state,
 	}
 
 	ui.Setup(&appInit)
 
 	appInit.Window.ShowAndRun()
 	/*
-		 	app := app.New()
-			window := app.NewWindow("Current Weather")
+		app := app.New()
+		window := app.NewWindow("Current Weather")
 
-			customForm := ui.CreateCustomForm(handleSubmit)
-			apiResults := ui.CreateMainData("Cinisi", "20 °C")
-			details := ui.CreateDetails(15, 18, 34, 1020, "6:12", "20:09")
+		customForm := ui.CreateCustomForm(handleSubmit)
+		apiResults := ui.CreateMainData("Cinisi", "20 °C")
+		details := ui.CreateDetails(15, 18, 34, 1020, "6:12", "20:09")
 
-			wrapper := container.NewGridWithRows(
-				3,
-				customForm,
-				apiResults,
-				details,
-			)
+		wrapper := container.NewGridWithRows(
+			3,
+			customForm,
+			apiResults,
+			details,
+		)
 
-			window.Resize(fyne.NewSize(445, 400))
-			window.SetContent(wrapper)
+		window.Resize(fyne.NewSize(445, 400))
+		window.SetContent(wrapper)
 
-			window.ShowAndRun()
+		window.ShowAndRun()
 	*/
 }
