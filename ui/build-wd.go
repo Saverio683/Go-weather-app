@@ -33,12 +33,8 @@ import (
 func BuildWeatherDetails(details []*weatherdetail.WeatherDetail) *fyne.Container {
 	weatherDetails := make([]fyne.CanvasObject, len(details))
 
-	for i := 0; i < len(details); i++ {
-		key := details[i].Key
-		val := details[i].Value
-
-		w := weatherdetail.NewWeatherDetail(key, val, i)
-		weatherDetails[i] = w
+	for i, detail := range details {
+		weatherDetails[i] = detail
 	}
 
 	result := container.New(

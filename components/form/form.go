@@ -16,9 +16,14 @@ func NewForm(submitFunc func(city, country string)) *Form {
 	form := &Form{
 		submitFunc: submitFunc,
 	}
+
 	form.ExtendBaseWidget(form)
 
 	return form
+}
+
+func (f *Form) SetSubmitFunc(submitFunc func(city, country string)) {
+	f.submitFunc = submitFunc
 }
 
 func (form *Form) CreateRenderer() fyne.WidgetRenderer {

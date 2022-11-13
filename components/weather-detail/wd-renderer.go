@@ -6,22 +6,37 @@ import (
 )
 
 type WeatherDetailRenderer struct {
-	key, val *canvas.Text
-	index    int
-	wrapper  *fyne.Container
+	key, value    *canvas.Text
+	container     *fyne.Container
+	weatherDetail *WeatherDetail
 }
 
 func (renderer *WeatherDetailRenderer) MinSize() fyne.Size {
-	return renderer.wrapper.Size()
+	return renderer.container.MinSize()
 }
 func (renderer *WeatherDetailRenderer) Layout(size fyne.Size) {
 }
 func (renderer *WeatherDetailRenderer) Refresh() {
-	canvas.Refresh(renderer.key)
-	canvas.Refresh(renderer.val)
-	canvas.Refresh(renderer.wrapper)
+	renderer.key.Text = renderer.weatherDetail.key
+	renderer.value.Text = renderer.weatherDetail.value
+
+	var (
+		marginLeft float32 = 10
+		y          float32
+	)
+
+	if renderer.weatherDetail.index < 3 {
+		y = 35
+	} else {
+		y = 20
+	}
+
+	renderer.key.Move(fyne.NewPos(marginLeft, y))
+	renderer.value.Move(fyne.NewPos(renderer.key.MinSize().Width+marginLeft, y))
+
+	canvas.Refresh(renderer.value)
 }
 func (renderer *WeatherDetailRenderer) Objects() []fyne.CanvasObject {
-	return renderer.wrapper.Objects
+	return renderer.container.Objects
 }
 func (renderer *WeatherDetailRenderer) Destroy() {}

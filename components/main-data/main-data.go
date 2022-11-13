@@ -26,23 +26,29 @@ func NewMainData(title, temp, imgLink string) *MainData {
 	return MainData
 }
 
+func (m *MainData) SetFields(title, temp, imgLink string) {
+	m.Title = title
+	m.Temp = temp
+	m.ImgLink = imgLink
+
+	m.Refresh()
+}
+
 func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
 	//creating widgets
 	title := canvas.NewText(MainData.Title, color.White)
-	temp := canvas.NewText(MainData.Temp, color.White)
-
 	title.TextSize = 18
-	temp.TextSize = 50
-
 	title.Move(fyne.NewPos(10, 20))
 
-	//"http://openweathermap.org/img/wn/09d@2x.png"
+	temp := canvas.NewText(MainData.Temp, color.White)
+	temp.TextSize = 50
+
 	r, _ := fyne.LoadResourceFromURLString(MainData.ImgLink)
 	image := canvas.NewImageFromResource(r)
 
 	image.FillMode = canvas.ImageFillContain
 	image.Resize(fyne.NewSize(100, 100))
-	image.Move(fyne.NewPos(310, 0))
+	image.Move(fyne.NewPos(310, -5))
 
 	wrapper := container.NewWithoutLayout(
 		temp,
@@ -59,7 +65,7 @@ func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
 		title:     title,
 		temp:      temp,
 		image:     image,
-		wrapper:   wrapper,
 		container: container,
+		mainData:  MainData,
 	}
 }

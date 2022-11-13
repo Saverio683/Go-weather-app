@@ -3,12 +3,22 @@ package utils
 import (
 	"log"
 	"net/http"
-	"weather-app/apptype"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
+type Detail struct {
+	Key, Val string
+	Index    int
+}
+type MainData struct {
+	Title, Temp, ImgLink string
+}
+
 type ApiResult struct {
-	WeatherDetails []apptype.Detail
-	MainData       apptype.MainData
+	WeatherDetails []Detail
+	MainData       MainData
 }
 
 const id = "17e57c3ab6fdc68fb851ae80c2f9c4b6"
@@ -29,37 +39,23 @@ func GetApiResults(city, country string) (ApiResult, error) { //makes the reques
 		return ApiResult{}, err
 	}
 
-	md := apptype.MainData{
-		Title:   "Current weather in " + city,
+	md := MainData{
+		Title:   "Current weather in " + cases.Title(language.English, cases.Compact).String(city),
 		ImgLink: "http://openweathermap.org/img/wn/" + GetStringFromAny(parsedResp.Weather[0]["icon"]) + "@2x.png",
-		Temp:    GetStringFromAny(parsedResp.Main["temp"]),
+		Temp:    GetStringFromAny(parsedResp.Main["temp"]) + "°C",
 	}
 
-	wd := append(make([]apptype.Detail, 6),
-		apptype.Detail{Key: "temp min:", Val: GetStringFromAny(parsedResp.Main["temp_min"]) + "°C"},
-		apptype.Detail{Key: "temp max:", Val: GetStringFromAny(parsedResp.Main["temp_max"]) + "°C"},
-		apptype.Detail{Key: "feels like:", Val: GetStringFromAny(parsedResp.Main["feels_like"]) + "°C"},
-		apptype.Detail{Key: "humidity:", Val: GetStringFromAny(parsedResp.Main["humidity"]) + "°%"},
-		apptype.Detail{Key: "sunrise:", Val: GetStringFromAny(parsedResp.Main["sunrise"])},
-		apptype.Detail{Key: "sunset:", Val: GetStringFromAny(parsedResp.Main["sunset"])},
+	wd := append(make([]Detail, 0),
+		Detail{Key: "temp min: ", Val: GetStringFromAny(parsedResp.Main["temp_min"]) + "°C"},
+		Detail{Key: "temp max: ", Val: GetStringFromAny(parsedResp.Main["temp_max"]) + "°C"},
+		Detail{Key: "feels like: ", Val: GetStringFromAny(parsedResp.Main["feels_like"]) + "°C"},
+		Detail{Key: "humidity: ", Val: GetStringFromAny(parsedResp.Main["humidity"]) + "%"},
+		Detail{Key: "sunrise: ", Val: /* GetStringFromAny(parsedResp.Sys["sunrise"]) */ "6:00"},
+		Detail{Key: "sunset: ", Val: /* GetStringFromAny(parsedResp.Sys["sunset"]) */ "19:45"},
 	)
 
-	/* md := apptype.MainData{
-
-
-
-	} */
-	/* wd = append(wd,
-		weatherdetail.NewWeatherDetail("temp min", GetStringFromAny(parsedResp.Main["temp_min"])+"°C", 0),
-		weatherdetail.NewWeatherDetail("temp max", GetStringFromAny(parsedResp.Main["temp_max"])+"°C", 1),
-		weatherdetail.NewWeatherDetail("feels like", GetStringFromAny(parsedResp.Main["feels_like"])+"°C", 2),
-		weatherdetail.NewWeatherDetail("humidity", GetStringFromAny(parsedResp.Main["humidity"])+"%", 3),
-		weatherdetail.NewWeatherDetail("sunrise", GetStringFromAny(parsedResp.Sys["sunrise"]), 4),
-		weatherdetail.NewWeatherDetail("sunset", GetStringFromAny(parsedResp.Sys["sunset"]), 5),
-	) */
-
 	return ApiResult{
-		WeatherDetails: wd,
 		MainData:       md,
+		WeatherDetails: wd,
 	}, nil
 }

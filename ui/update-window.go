@@ -1,37 +1,27 @@
 package ui
 
 import (
-	"fmt"
 	"weather-app/apptype"
+	weatherdetail "weather-app/components/weather-detail"
 	"weather-app/utils"
 )
 
-func UpdateWindow(city, country string, app *AppInit) {
+func UpdateWindow(city, country string, app *apptype.AppInit) (bool, error) {
 	res, err := utils.GetApiResults(city, country)
 
 	if err != nil {
+		return false, err
 	} else {
-		apptype.SetDetails(res.WeatherDetails, app.State)
-		apptype.SetMainData(res.MainData, app.State)
+		app.State.MainData.SetFields(res.MainData.Title, res.MainData.Temp, res.MainData.ImgLink)
 
-		fmt.Println(000)
+		for i, detail := range app.State.Details {
+			go func(i int, dt *weatherdetail.WeatherDetail) {
+				key := res.WeatherDetails[i].Key
+				value := res.WeatherDetails[i].Val
+				dt.SetFields(key, value, i)
+			}(i, detail)
+		}
+
+		return true, nil
 	}
-
-	/* var appContainer *fyne.Container
-
-	message := canvas.NewText("Please search something", color.White)
-	message.Move(fyne.NewPos(125, 200))
-	message.TextStyle.Bold = true
-
-	if app.State.Error {
-		message.Text = "Ops... something went wrong"
-	}
-
-	appContainer = container.NewWithoutLayout(
-		form,
-		message,
-		layout.NewSpacer(),
-	) */
-
-	//app.Window.SetContent(appContainer)
 }

@@ -11,49 +11,45 @@ import (
 
 type WeatherDetail struct {
 	widget.BaseWidget
-	Key, Value string
-	Index      int
+	key, value string
+	index      int
 }
 
-func NewWeatherDetail(key, value string, index int) *WeatherDetail {
+func NewWeatherDetail(k, v string, i int) *WeatherDetail {
 	weatherDetail := &WeatherDetail{
-		Key:   key,
-		Value: value,
-		Index: index,
+		key:   k,
+		value: v,
+		index: i,
 	}
 	weatherDetail.ExtendBaseWidget(weatherDetail)
 
 	return weatherDetail
 }
 
+func (w *WeatherDetail) SetFields(k, v string, i int) {
+	w.key = k
+	w.value = v
+	w.index = i
+
+	w.Refresh()
+}
+
 func (weatherDetail *WeatherDetail) CreateRenderer() fyne.WidgetRenderer {
 	//creating widgets
-	key := canvas.NewText(weatherDetail.Key, color.White)
-	value := canvas.NewText(weatherDetail.Value, color.White)
+	key := canvas.NewText(weatherDetail.key, color.White)
+	value := canvas.NewText(weatherDetail.value, color.White)
 
 	key.TextStyle.Bold = true
 
-	var marginLeft float32 = 10
-	var height float32
-
-	if weatherDetail.Index < 3 {
-		height = 20
-	} else {
-		height = 40
-	}
-
-	key.Move(fyne.NewPos(marginLeft, height))
-	value.Move(fyne.NewPos(key.MinSize().Width+marginLeft, height))
-
-	wrapper := container.NewWithoutLayout(
+	container := container.NewWithoutLayout(
 		key,
 		value,
 	)
 
 	return &WeatherDetailRenderer{
-		key:     key,
-		val:     value,
-		index:   weatherDetail.Index,
-		wrapper: wrapper,
+		container:     container,
+		key:           key,
+		value:         value,
+		weatherDetail: weatherDetail,
 	}
 }
