@@ -4,11 +4,14 @@ import (
 	"errors"
 	"log"
 	"net/http"
+	"os"
 	"strconv"
 	"time"
 
 	"golang.org/x/text/cases"
 	"golang.org/x/text/language"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 type Detail struct {
@@ -32,10 +35,9 @@ func milliToDate(m string) string { //to convert the sunrise and sunset fields, 
 	return hour + ":" + minute
 }
 
-const id = "17e57c3ab6fdc68fb851ae80c2f9c4b6"
-
 func GetApiResults(city, country string) (ApiResult, error) { //makes the request to the OpenWeatherMap API
-	url := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&units=metric&appid=" + id
+	apiKey := os.Getenv("API_KEY")
+	url := "https://api.openweathermap.org/data/2.5/weather?q=" + city + "," + country + "&units=metric&appid=" + apiKey
 	resp, err := http.Get(url)
 
 	if err != nil { //error retrieving weather api response
