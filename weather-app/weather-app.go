@@ -15,25 +15,17 @@ func main() {
 	window := weatherApp.NewWindow("Weather app")
 
 	details := make([]*weatherdetail.WeatherDetail, 6)
-
 	for i := 0; i < 6; i++ {
 		details[i] = weatherdetail.NewWeatherDetail("", "", i)
 	}
 
-	state := apptype.State{
+	state := apptype.State{ //initial state of the components, all empty
 		Form:     form.NewForm(func(city, country string) {}),
 		MainData: maindata.NewMainData("", "", ""),
 		Details:  details,
-		Loading:  false,
-		Error:    false,
 	}
 
-	appInit := apptype.AppInit{
-		Window: window,
-		State:  &state,
-	}
+	ui.Setup(window, &state) //setting up initial layout
 
-	ui.Setup(&appInit)
-
-	appInit.Window.ShowAndRun()
+	window.ShowAndRun()
 }

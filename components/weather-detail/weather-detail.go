@@ -26,10 +26,9 @@ func NewWeatherDetail(k, v string, i int) *WeatherDetail {
 	return weatherDetail
 }
 
-func (w *WeatherDetail) SetFields(k, v string, i int) {
+func (w *WeatherDetail) SetFields(k, v string) {
 	w.key = k
 	w.value = v
-	w.index = i
 
 	w.Refresh()
 }

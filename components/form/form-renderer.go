@@ -12,6 +12,7 @@ type FormRenderer struct {
 	container              *fyne.Container
 }
 
+// setting built-in functions
 func (renderer *FormRenderer) MinSize() fyne.Size {
 	return renderer.container.Size()
 }
@@ -21,7 +22,6 @@ func (renderer *FormRenderer) Refresh() {
 	canvas.Refresh(renderer.button)
 	canvas.Refresh(renderer.cityEntry)
 	canvas.Refresh(renderer.countrEntry)
-	canvas.Refresh(renderer.container)
 }
 func (renderer *FormRenderer) Objects() []fyne.CanvasObject {
 	return renderer.container.Objects

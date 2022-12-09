@@ -35,14 +35,16 @@ func (m *MainData) SetFields(title, temp, imgLink string) {
 }
 
 func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
-	//creating widgets
+	// title
 	title := canvas.NewText(MainData.Title, color.White)
 	title.TextSize = 18
 	title.Move(fyne.NewPos(10, 20))
 
+	// temperature
 	temp := canvas.NewText(MainData.Temp, color.White)
 	temp.TextSize = 50
 
+	// weather icon
 	r, _ := fyne.LoadResourceFromURLString(MainData.ImgLink)
 	image := canvas.NewImageFromResource(r)
 
@@ -50,6 +52,7 @@ func (MainData *MainData) CreateRenderer() fyne.WidgetRenderer {
 	image.Resize(fyne.NewSize(100, 100))
 	image.Move(fyne.NewPos(310, -5))
 
+	// wrapper puts temperature and image on the same row
 	wrapper := container.NewWithoutLayout(
 		temp,
 		image,

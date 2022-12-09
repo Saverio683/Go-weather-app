@@ -8,28 +8,7 @@ import (
 	"fyne.io/fyne/v2/layout"
 )
 
-/* func milliToDate(m string, isMorning bool) string {
-	var result string
-	var hoursToAdd int
-
-	if isMorning {
-		hoursToAdd = 0
-	} else {
-		hoursToAdd = 12
-	}
-
-	t, err := strconv.ParseInt(m, 10, 64)
-	if err != nil {
-		result = "error"
-	} else {
-		hour := strconv.Itoa(time.UnixMilli(t).UTC().Hour() + hoursToAdd)
-		minute := strconv.Itoa(time.UnixMilli(t).UTC().Minute())
-		result = hour + ":" + minute
-	}
-
-	return result
-} */
-
+// the function creates the container that wraps the weather details
 func BuildWeatherDetails(details []*weatherdetail.WeatherDetail) *fyne.Container {
 	weatherDetails := make([]fyne.CanvasObject, len(details))
 

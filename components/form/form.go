@@ -18,7 +18,6 @@ func NewForm(submitFunc func(city, country string)) *Form {
 	}
 
 	form.ExtendBaseWidget(form)
-
 	return form
 }
 
@@ -64,37 +63,3 @@ func (form *Form) CreateRenderer() fyne.WidgetRenderer {
 		container:   container,
 	}
 }
-
-/* func CreateCustomForm(onSubmitFunc func(a, b string)) *fyne.Container {
-	//creating widgets
-	cityEntry := widget.NewEntry()
-	countrEntry := widget.NewEntry()
-	button := widget.NewButton("Search", func() { onSubmitFunc(cityEntry.Text, countrEntry.Text) })
-
-	//set placeholder in text input
-	cityEntry.SetPlaceHolder("City")
-	countrEntry.SetPlaceHolder("Country (optional)")
-
-	//setting size
-	cityEntry.Resize(fyne.NewSize(250, 40))
-	countrEntry.Resize(fyne.NewSize(150, 40))
-	button.Resize(fyne.NewSize(160, 40))
-
-	//positioning
-	cityEntry.Move(fyne.NewPos(10, 10))
-	countrEntry.Move(fyne.NewPos(cityEntry.Size().Width+25, 10))
-	button.Move(fyne.NewPos(10, 25))
-
-	result := container.New(
-		layout.NewVBoxLayout(),
-		container.NewWithoutLayout(
-			cityEntry,
-			countrEntry,
-		),
-		container.NewWithoutLayout(
-			button,
-		),
-	)
-
-	return result
-} */
