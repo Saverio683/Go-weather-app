@@ -11,4 +11,9 @@ You must have your [openweathermap](https://openweathermap.org/price) api key, I
 
 You have to *clone* the repo and after that, in the root of the project, type the command `go mod tidy` to install all the dependencies.
 Next, also in the root directory you have to create an ***.env*** file where you save your *api key* in this format: 
-`API_KEY=YOUR_API_KEY_HERE`
+`API_KEY=YOUR_API_KEY_HERE`.
+
+You can run the project by typing `go run weather-app/weather-app.go`.
+
+## PROJECT PREVIEW
+![preview](https://i.imgur.com/AR54sp1.png)
